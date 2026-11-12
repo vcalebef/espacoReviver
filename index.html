@@ -201,6 +201,7 @@
   .fan { position: relative; height: clamp(15rem, 40vw, 27rem); margin-top: clamp(var(--s-4), 5vw, var(--s-5)); }
   .fan-arc-clip { position: absolute; z-index: 1; left: 50%; width: 100vw; translate: -50% 0; top: -12rem; bottom: 0; overflow: hidden; pointer-events: none; }
   .fan-arc { position: absolute; left: 50%; top: 6.7rem; width: min(165vw, 88.5rem); translate: -50% 0; color: var(--mint); opacity: .7; pointer-events: none; z-index: 1; }
+  @media (max-width: 779px) { .fan { margin-top: 4.75rem; } } /* o arco sobe acima das fotos: espaço para não encostar na nota */
   .fan-card {
     --w: clamp(7.2rem, 19vw, 13.5rem);
     position: absolute; z-index: 4; left: 50%; top: 14%; margin: 0;
