@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&text=dachly&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="fotos/rafaela.jpg">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
@@ -401,7 +402,7 @@
   .social-btn svg { width: 1.3rem; height: 1.3rem; }
   .social-btn:hover { background: var(--on-dark); color: var(--pine-deep); transform: translateY(-2px); }
   footer .legal { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.15); padding-top: var(--s-3); font-size: var(--fs-xs); }
-  footer .legal p + p { margin-top: var(--s-1); }
+  footer .legal > p + * { margin-top: var(--s-1); }
   @media (min-width: 860px) { footer .wrap { grid-template-columns: 1.3fr 1fr 1fr; } }
 
   /* Botão flutuante do WhatsApp */
@@ -469,6 +470,109 @@
     .tx[open] .tx-body, .faq details[open] p { animation: open-in .45s var(--ease); }
     @keyframes open-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   }
+  /* =====================================================================
+     V2: padrões da dachly com a identidade do Espaço Reviver
+     barra de leitura com o goniômetro, cartões com borda sólida, arco no
+     CTA final, vídeos com prévia e player próprio, crédito da dachly.
+     Os botões continuam como estavam.
+     ===================================================================== */
+
+  /* Barra de leitura: o ponteiro do goniômetro ganha amplitude com a rolagem */
+  .read { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; pointer-events: none; }
+  .read-line { height: 100%; background: linear-gradient(90deg, var(--mint), var(--teal)); transform-origin: left; transform: scaleX(var(--p, 0)); border-radius: 0 3px 3px 0; }
+  .read-mark { position: absolute; top: 100%; left: calc(var(--p, 0) * (100% - 2.3rem)); width: 2.3rem; height: 1.45rem; padding: .25rem .3rem .2rem; color: var(--teal); opacity: 0; transition: opacity .3s; border-radius: 0 0 .7rem .7rem; background: color-mix(in srgb, var(--mist) 90%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
+  .read.is-moving .read-mark { opacity: 1; }
+  .read-mark svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .read-needle { transform-origin: 20px 30px; transform: rotate(calc(var(--p, 0) * 180deg)); }
+
+  /* Cartões com borda inferior sólida */
+  .quote, .step-list li { box-shadow: 0 5px 0 var(--line); }
+  .quote { transition: transform .3s var(--ease), box-shadow .3s; }
+  .quote:hover, .step-list li:hover { transform: translateY(-4px); box-shadow: 0 9px 0 var(--mint); }
+  .about-card { box-shadow: 0 6px 0 color-mix(in srgb, var(--wood-deep) 45%, var(--wood)); }
+  .pass { box-shadow: 0 6px 0 var(--pine-deep); }
+  .about-card, .pass { margin-bottom: 6px; }
+
+  /* CTA final sobe em arco, como a borda do hero */
+  .faq { padding-bottom: calc(var(--section-y) + clamp(2.5rem, 7vw, 6rem)); }
+  .final { position: relative; overflow-x: clip; background: linear-gradient(var(--pine), color-mix(in srgb, var(--pine) 0%, transparent) 10rem), var(--stripes), var(--pine); }
+  .final::before {
+    content: ""; position: absolute; left: 50%; top: 1px; translate: -50% -100%; pointer-events: none;
+    width: 150%; height: clamp(2.5rem, 7vw, 6rem);
+    background: var(--pine); border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .final .wrap { position: relative; }
+
+  /* ===== Vídeos ===== */
+  .reel { box-shadow: 0 6px 0 var(--wood); margin-bottom: 6px; isolation: isolate; }
+  a.reel { transition: translate .35s var(--ease), box-shadow .35s; }
+  a.reel:hover { translate: 0 -4px; box-shadow: 0 10px 0 var(--wood); }
+  .reel-preview { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity .45s; pointer-events: none; }
+  .reel.is-previewing .reel-preview { opacity: 1; }
+  .reel-time, .reel-play, .reel-hint { z-index: 1; }
+  .reel-hint { position: absolute; left: var(--s-2); top: var(--s-2); display: inline-flex; align-items: center; gap: .3rem; background: color-mix(in srgb, var(--pine-deep) 78%, transparent); color: var(--on-dark); opacity: 0; translate: 0 -4px; transition: opacity .3s, translate .3s var(--ease); }
+  .reel-hint svg { width: .95rem; height: .95rem; }
+  .reel.is-previewing .reel-hint { opacity: 1; translate: none; }
+
+  /* Player */
+  .vp { cursor: pointer; }
+  .vp video { position: absolute; inset: 0; }
+  .vp :focus-visible { outline-color: var(--mint); }
+  .vp-big { position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 2; width: 4.25rem; height: 4.25rem; border: 0; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.92); color: var(--pine); cursor: pointer; box-shadow: 0 10px 30px -8px var(--shadow); transition: opacity .25s, scale .3s cubic-bezier(.3,1.5,.5,1); }
+  .vp-big svg { width: 1.6rem; height: 1.6rem; }
+  .vp-big:hover { scale: 1.08; }
+  .vp:not(.is-ended) .vp-big svg.i-play { margin-left: .2rem; }
+  .vp.is-playing .vp-big { opacity: 0; pointer-events: none; }
+  .vp-spin { position: absolute; left: 50%; top: 50%; z-index: 2; width: 2.75rem; height: 2.75rem; margin: -1.375rem 0 0 -1.375rem; border-radius: 50%; border: 3px solid rgba(255,255,255,.3); border-top-color: var(--mint); opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .vp.is-waiting.is-playing .vp-spin { opacity: 1; animation: vp-spin .8s linear infinite; }
+  @keyframes vp-spin { to { rotate: 360deg; } }
+  .vp-bar {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; cursor: default;
+    padding: 3rem .5rem .35rem; display: grid; gap: 0;
+    background: linear-gradient(transparent, color-mix(in srgb, var(--pine-deep) 88%, transparent) 70%);
+    color: var(--on-dark); transition: opacity .3s;
+  }
+  .vp.is-playing.is-idle .vp-bar { opacity: 0; }
+  .vp.is-playing.is-idle { cursor: none; }
+  .vp-row { display: flex; align-items: center; gap: .1rem; }
+  .vp-time { margin-right: auto; padding-left: .2rem; font: 600 var(--fs-xs)/1 var(--sans); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--on-dark-soft); }
+  .vp-time b { font-weight: 600; color: var(--on-dark); }
+  .vp-btn { width: 2.75rem; height: 2.75rem; flex: none; border: 0; border-radius: 50%; display: grid; place-items: center; background: transparent; color: var(--on-dark); cursor: pointer; transition: background-color .2s; }
+  .vp-btn:hover { background: rgba(255,255,255,.14); }
+  .vp-btn svg { width: 1.3rem; height: 1.3rem; }
+  .vp-seek { --v: 0%; width: calc(100% - .5rem); margin: 0 .25rem; height: 1.6rem; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; }
+  .vp-seek::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--mint) var(--v), rgba(255,255,255,.32) var(--v)); }
+  .vp-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: var(--wood); border: 0; box-shadow: 0 0 0 3px color-mix(in srgb, var(--pine-deep) 40%, transparent); transition: scale .2s; }
+  .vp-seek:hover::-webkit-slider-thumb, .vp-seek:active::-webkit-slider-thumb { scale: 1.25; }
+  .vp-seek::-moz-range-track { height: 4px; border-radius: 4px; background: rgba(255,255,255,.32); }
+  .vp-seek::-moz-range-progress { height: 4px; border-radius: 4px; background: var(--mint); }
+  .vp-seek::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--wood); border: 0; }
+  .vp-seek:focus-visible { outline-offset: 0; }
+  .vp-msg { position: absolute; inset: auto var(--s-3) 50%; z-index: 4; translate: 0 50%; text-align: center; color: var(--on-dark); font-size: var(--fs-sm); display: none; }
+  .vp-msg a { color: var(--mint); font-weight: 600; }
+  .vp.is-error .vp-msg { display: block; }
+  .vp.is-error .vp-big, .vp.is-error .vp-bar { display: none; }
+  .vp:fullscreen { border-radius: 0; aspect-ratio: auto; background: #000; box-shadow: none; margin: 0; }
+  .vp:fullscreen video { object-fit: contain; }
+  @media (prefers-reduced-motion: reduce) { .vp.is-waiting.is-playing .vp-spin { animation: none; border-color: var(--mint); } }
+
+  /* Vídeos do conteúdo: bolinhas para deslizar no celular */
+  .tips-dots { display: flex; justify-content: center; margin-top: var(--s-2); }
+  .tips-dots[hidden] { display: none; }
+  .tips-dots button { width: 2.75rem; height: 2.75rem; border: 0; padding: 0; background: transparent; display: grid; place-items: center; cursor: pointer; }
+  .tips-dots button::before { content: ""; width: .55rem; height: .55rem; border-radius: var(--pill); background: var(--line-strong); transition: width .35s var(--ease), background-color .35s; }
+  .tips-dots button[aria-current="true"]::before { width: 1.7rem; background: var(--teal); }
+  .tips-grid { padding-bottom: calc(var(--s-1) + 6px); scroll-padding-inline: 1.25rem; }
+
+  /* Crédito da dachly no rodapé */
+  footer .legal-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-4); margin-top: var(--s-2); }
+  footer .legal-bar p { margin: 0; }
+  footer .by { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--on-dark-soft); font-size: var(--fs-xs); padding: .35rem .8rem .35rem .9rem; border-radius: var(--pill); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); transition: background-color .25s, box-shadow .25s, color .25s; }
+  .by-logo { display: inline-flex; align-items: center; gap: .4rem; color: #fff; font: 800 1.15rem/1 "Bricolage Grotesque", var(--sans); letter-spacing: -.03em; }
+  .by-logo svg { width: 2.05rem; height: auto; color: #FFCC00; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  footer .by:hover { background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px #FFCC00; color: var(--on-dark); }
+  .by:hover .by-logo svg { transform: translateX(3px) rotate(-4deg); }
+  @media (max-width: 639px) { footer .legal-bar { flex-direction: column; align-items: flex-start; } }
 </style>
 </head>
 <body>
@@ -490,6 +594,13 @@
   <symbol id="air" viewBox="0 0 24 24"><path d="M3 8.5h11.5a2.6 2.6 0 1 0-2.6-2.6M3 12.5h16a2.8 2.8 0 1 1-2.8 2.8M3 16.5h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   <symbol id="access" viewBox="0 0 24 24"><circle cx="11" cy="4.2" r="1.7" fill="currentColor"/><path d="M11 7.5v6h5l2.5 5M11 10h5M8 11.3a5.2 5.2 0 1 0 7.4 6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="mark" viewBox="0 0 40 40"><path d="M6 30a14 14 0 0 1 28 0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity=".55"/><path d="M20 30 28.5 15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="20" cy="30" r="2.8" fill="currentColor"/></symbol>
+  <symbol id="pause" viewBox="0 0 24 24"><rect x="6.5" y="4.5" width="3.8" height="15" rx="1.2" fill="currentColor"/><rect x="13.7" y="4.5" width="3.8" height="15" rx="1.2" fill="currentColor"/></symbol>
+  <symbol id="vol" viewBox="0 0 24 24"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4Z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="mute" viewBox="0 0 24 24"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4Z" fill="currentColor"/><path d="m15.5 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="full" viewBox="0 0 24 24"><path d="M4.5 9V4.5H9M15 4.5h4.5V9M19.5 15v4.5H15M9 19.5H4.5V15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="unfull" viewBox="0 0 24 24"><path d="M9 4.5V9H4.5M19.5 9H15V4.5M15 19.5V15h4.5M4.5 15H9v4.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="replay" viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 0 2.1-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M6.6 3.2v4.3h4.3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="dachly" viewBox="18 12 620 420"><path fill="currentColor" fill-rule="evenodd" d="M 462 14.160 C 438.343 16.085, 416.465 29.304, 404.594 48.845 C 397.327 60.809, 393.776 77.733, 395.981 89.895 C 397.143 96.303, 398.458 101.024, 415.413 159.653 C 420.686 177.888, 425 193.435, 425 194.203 C 425 194.970, 423.398 196.178, 421.439 196.886 C 416.392 198.711, 415.318 201.634, 416.892 209.256 C 418.568 217.368, 421.188 222.283, 426.863 227.958 C 442.254 243.349, 468.762 243.592, 484.906 228.491 C 491.881 221.967, 491.157 221.232, 478.314 221.803 L 467.714 222.275 468.423 219.387 C 470.141 212.392, 470.221 204.267, 468.604 200.879 C 466.768 197.034, 461.436 193, 458.188 193 C 455.377 193, 455.305 199.241, 458.953 127.385 C 460.085 105.078, 462.864 99.126, 475.009 92.996 L 480.751 90.097 481.198 81.299 C 481.709 71.252, 484.591 64.205, 490.076 59.589 C 494.233 56.091, 494.452 56.587, 491.383 62.549 C 482.326 80.145, 501.764 99.392, 515.142 86.076 C 518.624 82.611, 522.046 74.713, 520.664 73.331 C 520.304 72.970, 518.860 73.198, 517.457 73.838 C 510.370 77.067, 503 72.847, 503 65.560 C 503 62.025, 506.997 57, 509.808 57 C 512.414 57, 519.628 65.461, 521.363 70.553 C 523.678 77.347, 523.497 88.597, 520.963 95.369 C 517.823 103.762, 508.740 110.961, 501.250 110.994 C 500.563 110.997, 500 111.498, 500 112.107 C 500 116.936, 509.380 183.752, 510.195 184.735 C 511.829 186.704, 514.811 186.228, 516.366 183.750 C 517.142 182.513, 523.554 161.925, 530.614 138 C 542.872 96.459, 543.466 94.027, 543.825 84 C 544.264 71.740, 543.064 65.265, 538.543 55.500 C 525.490 27.306, 496.024 11.391, 462 14.160 M 535.502 22.996 C 535.143 23.577, 537.021 26.733, 539.675 30.010 C 552.755 46.161, 554.453 50.880, 563.593 96.500 C 567.671 116.850, 571.720 135.300, 572.592 137.500 C 574.960 143.473, 580.116 149.195, 586.136 152.529 C 591.028 155.239, 592.335 155.500, 601 155.500 C 609.671 155.500, 610.970 155.240, 615.879 152.521 C 622.167 149.038, 627.153 142.960, 629.692 135.682 C 632.196 128.504, 632.200 107.222, 629.699 98 C 625.488 82.473, 614.806 66.419, 602.747 57.494 C 594.460 51.360, 536.386 21.567, 535.502 22.996 M 366.449 62.772 C 336.444 92.294, 328.004 107.294, 325.105 136.250 C 322.466 162.604, 332.874 195.299, 348.645 210.197 C 356.950 218.042, 369.903 217.861, 377.977 209.788 C 384.810 202.955, 391.293 181.082, 392.586 160.500 C 393.625 143.950, 392.022 134.010, 383.228 102.500 C 378.555 85.755, 379.870 65.503, 386.628 50.142 C 388.791 45.225, 388.970 42.965, 387.191 43.022 C 386.811 43.035, 377.477 51.922, 366.449 62.772 M 424.595 65.168 C 420.365 71.207, 424.669 79.397, 431.764 78.810 C 435.322 78.515, 435.492 78.338, 435.337 75.104 C 435.155 71.320, 430.322 63.686, 427.801 63.200 C 426.915 63.030, 425.473 63.915, 424.595 65.168 M 409.675 68.171 C 406.417 73.812, 405.012 79.193, 405.006 86.068 C 404.988 103.683, 416.726 115.734, 427.500 109.163 C 431.452 106.753, 435.691 98.795, 436.804 91.697 C 437.632 86.417, 436.971 84.028, 435.641 87.494 C 435.325 88.316, 433.590 89.889, 431.784 90.991 C 419.450 98.510, 405.443 82.842, 411.513 68.314 C 413.669 63.155, 412.621 63.073, 409.675 68.171 M 279 220.988 C 253.425 225.274, 185.475 236.544, 128 246.032 C 70.525 255.521, 23.050 263.701, 22.500 264.209 C 20.153 266.381, 35.754 272.732, 52 276.219 C 57.225 277.340, 61.669 278.406, 61.876 278.588 C 62.083 278.770, 59.450 281.974, 56.026 285.709 C 40.407 302.743, 27.119 328.123, 20.520 353.521 C 14.571 376.416, 13.305 407.550, 17.542 426.750 L 18.038 429 53.551 429 L 89.064 429 89.901 426.750 C 90.361 425.512, 90.499 423.874, 90.208 423.110 C 88.892 419.655, 63.570 410.302, 50.500 408.444 C 37.738 406.630, 29.001 398.030, 28.999 387.282 L 28.999 383.500 42.599 383.851 C 59.263 384.280, 69.327 382.918, 82.963 378.389 C 101.624 372.190, 115.948 363.198, 130.207 348.733 L 137.914 340.914 146.207 341.958 C 150.768 342.532, 178.125 345.709, 207 349.019 C 235.875 352.328, 267.016 355.927, 276.203 357.018 C 285.389 358.108, 295.650 359, 299.005 359 C 317.269 359, 337.729 349.102, 349.113 334.760 C 354.047 328.543, 360.804 315.062, 361.658 309.728 C 362.291 305.776, 363.995 303.573, 364.006 306.691 C 364.010 307.686, 365.583 330.505, 367.502 357.399 C 370.717 402.464, 371.174 406.699, 373.335 411.399 C 376.547 418.385, 379.887 422.067, 386.167 425.546 L 391.500 428.500 429.390 428.500 C 464.388 428.500, 467.364 428.366, 468.385 426.750 C 470.166 423.929, 468.141 421.903, 458.437 416.802 C 447.676 411.145, 431.058 405.546, 418.337 403.292 C 413.202 402.382, 409.019 401.382, 409.041 401.069 C 409.064 400.756, 422.901 392.422, 439.791 382.549 C 484.818 356.228, 488.384 351.742, 495.905 311.965 C 499.965 290.496, 501.130 253.849, 497.943 247.894 C 496.498 245.194, 495.239 245.461, 485.848 250.457 C 455.569 266.564, 419.161 256.188, 403.500 226.986 C 401.171 222.645, 398.745 219.382, 397.693 219.179 C 396.603 218.969, 393.919 220.673, 390.917 223.481 C 388.183 226.038, 382.921 229.561, 379.223 231.310 C 373.167 234.175, 371.607 234.484, 363.500 234.427 C 350.011 234.334, 344.678 231.949, 334.283 221.366 C 329.764 216.765, 325.939 213.044, 325.783 213.098 C 325.628 213.152, 304.575 216.702, 279 220.988 M 138.422 363.121 C 135.165 366.436, 128.356 372.264, 123.291 376.073 C 115.685 381.791, 113.877 383.677, 112.911 386.902 C 110.706 394.261, 113.980 401.840, 120.550 404.585 C 123.161 405.676, 172.940 406.664, 193.715 406.037 C 195.345 405.987, 197.129 402.500, 196.441 400.707 C 194.647 396.033, 160.390 382.388, 144.240 379.915 C 139.708 379.222, 136 378.387, 136 378.061 C 136 377.734, 138.458 375.997, 141.462 374.200 C 148.767 369.831, 150 368.442, 150 364.584 C 150 361.611, 148.575 359.469, 145.422 357.699 C 144.829 357.367, 141.679 359.807, 138.422 363.121 M 475.071 379.752 C 465.280 384.744, 464.474 398.655, 473.706 403.313 C 478.179 405.569, 525.320 406.537, 527.441 404.416 C 530.049 401.808, 529.222 399.580, 524.250 395.809 C 513.624 387.752, 501.458 382.121, 489.030 379.506 C 480.010 377.609, 479.247 377.622, 475.071 379.752"/></symbol>
 </svg>
 
 <header class="top">
@@ -506,6 +617,10 @@
       <a href="#local">Como chegar</a>
     </nav>
     <a class="btn btn--sm" data-cta="topo" href="https://wa.me/5519999485664?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20Espa%C3%A7o%20Reviver%20e%20gostaria%20de%20agendar%20uma%20avalia%C3%A7%C3%A3o." target="_blank" rel="noopener" aria-label="Agendar pelo WhatsApp"><svg class="ico" aria-hidden="true"><use href="#wa"/></svg><span>Agendar</span></a>
+  </div>
+  <div class="read" aria-hidden="true">
+    <div class="read-line"></div>
+    <div class="read-mark"><svg viewBox="4 14 32 19"><path d="M6 30a14 14 0 0 1 28 0" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity=".55"/><path class="read-needle" d="M20 30H8.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="20" cy="30" r="2.8" fill="currentColor"/></svg></div>
   </div>
 </header>
 
@@ -818,7 +933,10 @@
     </div>
     <div class="legal">
       <p>As informações desta página têm caráter informativo e não substituem avaliação e orientação de um profissional de saúde.</p>
-      <p>© 2026 Espaço Reviver: Reabilitação Funcional (Fisioterapia &amp; Pilates).</p>
+      <div class="legal-bar">
+        <p>© 2026 Espaço Reviver: Reabilitação Funcional (Fisioterapia &amp; Pilates).</p>
+        <a class="by" href="https://dachly.vercel.app" target="_blank" rel="noopener" aria-label="Site feito pela dachly">Site feito por <span class="by-logo"><svg viewBox="18 12 620 420" aria-hidden="true"><use href="#dachly"/></svg>dachly</span></a>
+      </div>
     </div>
   </div>
 </footer>
@@ -831,9 +949,17 @@
 
   // Cabeçalho ganha fundo ao rolar
   const top = document.querySelector('.top');
-  const onScroll = () => top.classList.toggle('is-scrolled', scrollY > 24);
+  // a barra de leitura acompanha a rolagem; o ponteiro do goniômetro abre de 0° a 180°
+  const read = document.querySelector('.read');
+  const onScroll = () => {
+    top.classList.toggle('is-scrolled', scrollY > 24);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    read.style.setProperty('--p', max > 0 ? Math.min(scrollY / max, 1).toFixed(4) : 0);
+    read.classList.toggle('is-moving', scrollY > 40);
+  };
   onScroll();
   addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
 
   // Título do hero: palavra por palavra
   const h1 = document.querySelector('.hero h1');
@@ -846,6 +972,11 @@
   document.querySelectorAll('[data-wa]').forEach(a => { a.href = WA + encodeURIComponent(a.dataset.wa); });
 
   // Links que abrem em nova aba avisam leitores de tela
+  document.querySelectorAll('.reel[data-video]').forEach(a => {
+    a.setAttribute('role', 'button');
+    a.removeAttribute('target');
+    a.addEventListener('keydown', e => { if (e.key === ' ') { e.preventDefault(); a.click(); } });
+  });
   document.querySelectorAll('a[target="_blank"]').forEach(a => {
     if (a.hasAttribute('aria-label')) a.setAttribute('aria-label', a.getAttribute('aria-label') + ' (abre em nova aba)');
     else a.insertAdjacentHTML('beforeend', '<span class="sr-only"> (abre em nova aba)</span>');
@@ -893,20 +1024,164 @@
   }), { rootMargin: '-45% 0px -50% 0px' });
   links.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) spy.observe(s); });
 
-  // Vídeos: tocam no próprio card (sem JS, o link abre o reel no Instagram)
-  document.querySelectorAll('.reel[data-video]').forEach(card => card.addEventListener('click', e => {
-    e.preventDefault();
-    document.querySelectorAll('.reel video').forEach(v => v.pause());
-    const v = document.createElement('video');
-    v.src = card.dataset.video;
-    v.controls = true; v.playsInline = true; v.autoplay = true;
-    v.poster = card.querySelector('img').src;
-    v.setAttribute('aria-label', card.getAttribute('aria-label').replace('Assistir: ', '').replace(' (abre em nova aba)', ''));
-    const box = document.createElement('div');
-    box.className = 'reel'; box.append(v);
-    card.replaceWith(box);
-    v.focus();
-  }));
+  // ===== Vídeos =====
+  // Sem JS, o cartão abre o reel no Instagram. Com JS: prévia sem som ao passar o mouse
+  // (só no computador) e player próprio no clique, com um vídeo tocando por vez.
+  const icon = (id, cls = '') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+  const fmt = s => { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const players = new Set();
+  const offscreen = new IntersectionObserver(es => es.forEach(e => {
+    if (e.intersectionRatio < .4) e.target.querySelector('video').pause();
+  }), { threshold: [0, .4] });
+  const canPreview = !reduce && matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  document.querySelectorAll('.reel[data-video]').forEach(card => {
+    const title = card.getAttribute('aria-label').replace('Assistir: ', '').replace(/ \(.*\)$/, '');
+    const dur = card.querySelector('.reel-time').textContent;
+    const poster = card.querySelector('img').getAttribute('src');
+
+    if (canPreview) {
+      card.insertAdjacentHTML('beforeend', `<span class="badge reel-hint" aria-hidden="true">${icon('mute')}Prévia sem som</span>`);
+      let pv;
+      card.addEventListener('mouseenter', () => {
+        if (!pv) {
+          pv = document.createElement('video');
+          pv.className = 'reel-preview';
+          pv.muted = true; pv.loop = true; pv.playsInline = true; pv.preload = 'auto';
+          pv.setAttribute('muted', ''); pv.setAttribute('aria-hidden', 'true'); pv.tabIndex = -1;
+          pv.src = card.dataset.video;
+          pv.addEventListener('playing', () => { if (card.matches(':hover')) card.classList.add('is-previewing'); });
+          card.querySelector('img').after(pv);
+        }
+        pv.currentTime = 0;
+        pv.play().catch(() => {});
+      });
+      card.addEventListener('mouseleave', () => { if (pv) pv.pause(); card.classList.remove('is-previewing'); });
+    }
+
+    card.addEventListener('click', e => {
+      e.preventDefault();
+      const box = document.createElement('div');
+      box.className = 'reel vp is-playing';
+      box.setAttribute('role', 'group');
+      box.setAttribute('aria-label', 'Vídeo: ' + title);
+      box.innerHTML = `<video playsinline preload="auto" poster="${poster}" src="${card.dataset.video}" aria-label="${title}"></video>
+        <button class="vp-big" type="button" aria-label="Reproduzir">${icon('play', 'i-play')}</button>
+        <span class="vp-spin" aria-hidden="true"></span>
+        <p class="vp-msg">Não foi possível carregar o vídeo. <a href="${card.href}" target="_blank" rel="noopener">Assista no Instagram<span class="sr-only"> (abre em nova aba)</span></a></p>
+        <div class="vp-bar">
+          <input class="vp-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Posição no vídeo">
+          <div class="vp-row">
+            <button class="vp-btn vp-play" type="button" aria-label="Pausar">${icon('pause')}</button>
+            <span class="vp-time"><b class="vp-cur">0:00</b> / ${dur}</span>
+            <button class="vp-btn vp-mute" type="button" aria-label="Tirar o som">${icon('vol')}</button>
+            <button class="vp-btn vp-full" type="button" aria-label="Tela cheia">${icon('full')}</button>
+          </div>
+        </div>`;
+      const v = box.querySelector('video'), big = box.querySelector('.vp-big'), play = box.querySelector('.vp-play'),
+            seek = box.querySelector('.vp-seek'), cur = box.querySelector('.vp-cur'),
+            mute = box.querySelector('.vp-mute'), full = box.querySelector('.vp-full');
+      const setBtn = (b, id, label) => { b.querySelector('use').setAttribute('href', '#' + id); b.setAttribute('aria-label', label); };
+      const toggle = () => { if (v.paused || v.ended) v.play().catch(() => {}); else v.pause(); };
+
+      // controles somem enquanto o vídeo toca e voltam com qualquer gesto
+      let idle;
+      const wake = () => { box.classList.remove('is-idle'); clearTimeout(idle); idle = setTimeout(() => { if (!v.paused && !box.querySelector(':focus-visible')) box.classList.add('is-idle'); }, 2200); };
+      ['pointermove', 'pointerdown', 'focusin', 'keydown'].forEach(t => box.addEventListener(t, wake));
+      box.addEventListener('focusout', () => setTimeout(wake, 0));
+
+      // progresso suave enquanto toca
+      let dragging = false, raf;
+      const paint = () => {
+        const p = v.duration ? v.currentTime / v.duration : 0;
+        if (!dragging) seek.value = Math.round(p * 1000);
+        seek.style.setProperty('--v', (seek.value / 10) + '%');
+        seek.setAttribute('aria-valuetext', fmt(v.currentTime) + ' de ' + dur);
+        cur.textContent = fmt(v.currentTime);
+      };
+      const loop = () => { paint(); raf = requestAnimationFrame(loop); };
+
+      v.addEventListener('play', () => {
+        players.forEach(o => o !== v && o.pause());
+        box.classList.add('is-playing'); box.classList.remove('is-ended');
+        setBtn(play, 'pause', 'Pausar');
+        cancelAnimationFrame(raf); loop(); wake();
+      });
+      v.addEventListener('pause', () => {
+        box.classList.remove('is-playing', 'is-idle', 'is-waiting');
+        setBtn(play, 'play', 'Reproduzir');
+        if (!v.ended) setBtn(big, 'play', 'Reproduzir');
+        cancelAnimationFrame(raf); paint();
+      });
+      v.addEventListener('ended', () => {
+        box.classList.add('is-ended');
+        setBtn(big, 'replay', 'Assistir de novo');
+        setBtn(play, 'replay', 'Assistir de novo');
+      });
+      v.addEventListener('waiting', () => box.classList.add('is-waiting'));
+      ['playing', 'canplay', 'seeked'].forEach(t => v.addEventListener(t, () => box.classList.remove('is-waiting')));
+      v.addEventListener('volumechange', () => setBtn(mute, v.muted ? 'mute' : 'vol', v.muted ? 'Ligar o som' : 'Tirar o som'));
+      v.addEventListener('error', () => box.classList.add('is-error'));
+      v.addEventListener('click', toggle);
+      v.addEventListener('dblclick', () => full.click());
+      big.addEventListener('click', toggle);
+      play.addEventListener('click', toggle);
+      mute.addEventListener('click', () => { v.muted = !v.muted; });
+      seek.addEventListener('input', () => {
+        dragging = true;
+        if (v.duration) v.currentTime = seek.value / 1000 * v.duration;
+        paint();
+      });
+      seek.addEventListener('change', () => { dragging = false; });
+      full.addEventListener('click', () => {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else if (box.requestFullscreen) box.requestFullscreen().catch(() => {});
+        else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); // iPhone
+      });
+      document.addEventListener('fullscreenchange', () => {
+        const on = document.fullscreenElement === box;
+        setBtn(full, on ? 'unfull' : 'full', on ? 'Sair da tela cheia' : 'Tela cheia');
+      });
+      box.addEventListener('keydown', e => {
+        const t = e.target, onSeek = t === seek, onBtn = t.tagName === 'BUTTON' || t.tagName === 'A';
+        const k = e.key.toLowerCase();
+        if ((k === ' ' && !onBtn) || k === 'k') { e.preventDefault(); toggle(); }
+        else if (k === 'm') mute.click();
+        else if (k === 'f') full.click();
+        else if (!onSeek && (k === 'arrowleft' || k === 'arrowright')) { e.preventDefault(); v.currentTime = Math.max(0, Math.min(v.duration || 0, v.currentTime + (k === 'arrowright' ? 5 : -5))); paint(); }
+      });
+
+      players.add(v);
+      card.replaceWith(box);
+      offscreen.observe(box);
+      v.play().catch(() => { box.classList.remove('is-playing'); setBtn(play, 'play', 'Reproduzir'); });
+      play.focus({ preventScroll: true });
+    });
+  });
+
+  // Vídeos do conteúdo: bolinhas indicam a posição no celular
+  const tips = document.querySelector('.tips-grid');
+  if (tips) {
+    const items = [...tips.children];
+    const dots = document.createElement('div');
+    dots.className = 'tips-dots';
+    dots.innerHTML = items.map((li, i) => `<button type="button" aria-label="Ir para o vídeo ${i + 1} de ${items.length}: ${li.querySelector('h3').textContent}"></button>`).join('');
+    tips.after(dots);
+    const btns = [...dots.children];
+    const sync = () => {
+      const max = tips.scrollWidth - tips.clientWidth;
+      dots.hidden = max < 4;
+      const i = max > 0 ? Math.round(tips.scrollLeft / max * (items.length - 1)) : 0;
+      btns.forEach((b, j) => b.setAttribute('aria-current', j === i ? 'true' : 'false'));
+    };
+    btns.forEach((b, i) => b.addEventListener('click', () => {
+      const max = tips.scrollWidth - tips.clientWidth;
+      tips.scrollTo({ left: max * i / (items.length - 1), behavior: reduce ? 'auto' : 'smooth' });
+    }));
+    tips.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', sync);
+    sync();
+  }
 
   // Botão flutuante do WhatsApp aparece depois que o botão do hero sai da tela
   const fab = document.querySelector('.wa-fab');
